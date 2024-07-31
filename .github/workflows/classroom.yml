@@ -1,0 +1,65 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Initial_set_up_1
+      id: initial_set_up_1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Initial_set_up_1
+        setup-command: ''
+        command: actions/checkout@v4
+        timeout: 10
+    - name: Initial_set_up_2
+      id: initial_set_up_2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Initial_set_up_2
+        setup-command: ''
+        command: npm install -g @angular/cli
+        timeout: 10
+    - name: Initial_set_up_3
+      id: initial_set_up_3
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Initial_set_up_3
+        setup-command: ''
+        command: npm install
+        timeout: 10
+    - name: Initial_set_up_4
+      id: initial_set_up_4
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Initial_set_up_4
+        setup-command: ''
+        command: npm install cypress-multi-reporters mocha-junit-reporter --save-dev
+        timeout: 10
+    - name: Initial_set_up_5
+      id: initial_set_up_5
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Initial_set_up_5
+        setup-command: ''
+        command: npm start &
+        timeout: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        INITIAL_SET_UP_1_RESULTS: "${{steps.initial_set_up_1.outputs.result}}"
+        INITIAL_SET_UP_2_RESULTS: "${{steps.initial_set_up_2.outputs.result}}"
+        INITIAL_SET_UP_3_RESULTS: "${{steps.initial_set_up_3.outputs.result}}"
+        INITIAL_SET_UP_4_RESULTS: "${{steps.initial_set_up_4.outputs.result}}"
+        INITIAL_SET_UP_5_RESULTS: "${{steps.initial_set_up_5.outputs.result}}"
+      with:
+        runners: initial_set_up_1,initial_set_up_2,initial_set_up_3,initial_set_up_4,initial_set_up_5
